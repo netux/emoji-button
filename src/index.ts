@@ -197,11 +197,8 @@ export default class EmojiButton {
             this.pickerEl.removeChild(variantPopup);
           }
 
-          if (this.options.style === 'twemoji') {
-            this.publicEvents.emit('emoji', twemoji.parse(emoji.emoji));
-          } else {
-            this.publicEvents.emit('emoji', emoji.emoji);
-          }
+          this.publicEvents.emit('emoji', emoji.emoji);
+
           if (this.options.autoHide) {
             this.hidePicker();
           }
