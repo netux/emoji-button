@@ -63,7 +63,8 @@ declare namespace EmojiButton {
   | '5.0'
   | '11.0'
   | '12.0'
-  | '12.1';
+  | '12.1'
+  | '13.0';
 
   export type Category =
   | 'smileys'

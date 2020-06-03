@@ -58,7 +58,7 @@
     "focus-trap": "^5.1.0",
     "tiny-emitter": "^2.1.0",
     "tslib": "^1.10.0",
-    "twemoji": "^12.1.5"
+    "twemoji": "^13.0.0"
   },
   "files": [
     "dist",

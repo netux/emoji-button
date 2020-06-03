@@ -87,7 +87,7 @@ Creates an Emoji Button emoji picker.
 
 * `emojisPerRow`: (number, default: `8`): The number of emojis to display per row. If this is set to a number smaller than 6, some category buttons may be cut off, so it is advisable to set `showCategoryButtons` to `false`.
 
-* `emojiVersion`: (string, default: `'12.1'`) The Emoji version to use. This determines which emojis are available. Supported versions are:
+* `emojiVersion`: (string, default: `'13.0'`) The Emoji version to use. This determines which emojis are available. Supported versions are:
   * `1.0`
   * `2.0`
   * `3.0`
@@ -96,6 +96,7 @@ Creates an Emoji Button emoji picker.
   * `11.0`
   * `12.0`
   * `12.1`
+  * `13.0`
 
 * `position`: The position to display the picker relative to the reference element. Valid values are:
   * `auto`
