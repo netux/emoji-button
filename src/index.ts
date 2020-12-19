@@ -58,7 +58,7 @@ const DEFAULT_OPTIONS: EmojiButtonOptions = {
   showCategoryButtons: true,
   recentsCount: 50,
   emojiData,
-  emojiVersion: '12.1',
+  emojiVersion: '13.0',
   theme: 'light',
   categories: [
     'smileys',
@@ -240,8 +240,6 @@ export class EmojiButton {
       let eventData: EmojiSelection;
       if (emoji.custom) {
         eventData = this.emitCustomEmoji(emoji);
-      } else if (this.options.style === STYLE_TWEMOJI) {
-        eventData = await this.emitTwemoji(emoji);
       } else {
         eventData = this.emitNativeEmoji(emoji);
       }
@@ -275,28 +273,6 @@ export class EmojiButton {
       name: emoji.name,
       custom: true
     };
-  }
-
-  /**
-   * Emits a Twemoji emoji record.
-   * @param emoji The selected emoji
-   */
-  private emitTwemoji(emoji: EmojiRecord): Promise<EmojiSelection> {
-    return new Promise(resolve => {
-      twemoji.parse(emoji.emoji, {
-        ...this.options.twemojiOptions,
-        callback: (icon, { base, size, ext }: any) => {
-          const imageUrl = `${base}${size}/${icon}${ext}`;
-          resolve({
-            url: imageUrl,
-            emoji: emoji.emoji,
-            name: emoji.name
-          });
-
-          return imageUrl;
-        }
-      });
-    });
   }
 
   /**

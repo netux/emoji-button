@@ -57,7 +57,7 @@ export default function CustomizationExample() {
 
       <h2>Emoji version</h2>
       <p>
-        By default, Emoji Button shows all the emojis in the Emoji 12.1
+        By default, Emoji Button shows all the emojis in the Emoji 13.0
         specification. If desired, an older version of the Emoji specification
         can be used.
       </p>

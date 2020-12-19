@@ -45,7 +45,7 @@ export default function Home() {
           <p>
             Emoji Button lets you add an emoji picker to your website or app
             with a few simple lines of code. It supports all Unicode emojis up
-            to and including Emoji 12.1, and is fully customizable.
+            to and including Emoji 13.0, and is fully customizable.
           </p>
         </section>
 
