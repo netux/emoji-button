@@ -1,22 +1,27 @@
-const commonjs = require('rollup-plugin-commonjs');
-const postcss = require('rollup-plugin-postcss');
-const resolve = require('rollup-plugin-node-resolve');
-const replace = require('@rollup/plugin-replace');
-const typescript = require('@rollup/plugin-typescript');
-const { terser } = require('rollup-plugin-terser');
+import commonjs from 'rollup-plugin-commonjs';
+import postcss from 'rollup-plugin-postcss';
+import resolve from 'rollup-plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
+import typescript from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
 
 const production = process.env.NODE_ENV === 'production';
 
-module.exports = {
+export default {
   input: 'src/index.ts',
   output: {
     file: 'dist/index.js',
     format: 'umd',
     name: 'EmojiButton'
   },
+  watch: {
+    buildDelay: 500
+  },
   plugins: [
     replace({
-      'process.env.NODE_ENV': JSON.stringify(production ? 'production' : 'development')
+      'process.env.NODE_ENV': JSON.stringify(
+        production ? 'production' : 'development'
+      )
     }),
     postcss({
       extensions: ['.css']

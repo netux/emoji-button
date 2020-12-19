@@ -1,8 +1,11 @@
 import { Placement } from '@popperjs/core';
+import { ParseObject } from 'twemoji';
+import { EmojiButton } from './index';
 
 export interface EmojiRecord {
   name: string;
   emoji: string;
+  custom?: boolean;
   category?: number;
   version?: string;
   variations?: string[];
@@ -11,13 +14,21 @@ export interface EmojiRecord {
 
 export interface EmojiData {
   categories: string[];
-  emojiData: EmojiRecord[];
+  emoji: EmojiRecord[];
+}
+
+export interface EmojiSelection {
+  name: string;
+  custom?: boolean;
+  emoji?: string;
+  url?: string;
 }
 
 export interface RecentEmoji {
   key: string;
   name: string;
   emoji: string;
+  custom?: boolean;
 }
 
 export interface EmojiEventData {
@@ -26,10 +37,16 @@ export interface EmojiEventData {
   button: HTMLElement;
 }
 
+export interface Plugin {
+  render(picker: EmojiButton): HTMLElement;
+  destroy?(): void;
+}
+
 export interface EmojiButtonOptions {
-  position?: Placement;
+  position?: Placement | FixedPosition;
   autoHide?: boolean;
   autoFocusSearch?: boolean;
+  showAnimation?: boolean;
   showPreview?: boolean;
   showSearch?: boolean;
   showRecents?: boolean;
@@ -37,15 +54,31 @@ export interface EmojiButtonOptions {
   showCategoryButtons?: boolean;
   recentsCount?: number;
   rootElement?: HTMLElement;
+  emojiData?: EmojiData;
   emojiVersion?: EmojiVersion;
   i18n?: I18NStrings;
   zIndex?: number;
   theme?: EmojiTheme;
   categories?: Category[];
   style?: EmojiStyle;
+  twemojiOptions?: Partial<ParseObject>;
   emojisPerRow?: number;
   rows?: number;
   emojiSize?: string;
+  initialCategory?: Category | 'recents';
+  custom?: EmojiRecord[];
+  plugins?: Plugin[];
+  icons?: Icons;
+  styleProperties?: {
+    [key: string]: string;
+  };
+}
+
+export interface FixedPosition {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
 }
 
 export type EmojiStyle = 'native' | 'twemoji';
@@ -60,7 +93,8 @@ export type EmojiVersion =
   | '5.0'
   | '11.0'
   | '12.0'
-  | '12.1';
+  | '12.1'
+  | '13.0';
 
 export type Category =
   | 'smileys'
@@ -83,7 +117,8 @@ export type I18NCategory =
   | 'travel'
   | 'objects'
   | 'symbols'
-  | 'flags';
+  | 'flags'
+  | 'custom';
 
 export interface I18NStrings {
   search: string;
@@ -91,4 +126,13 @@ export interface I18NStrings {
     [key in I18NCategory]: string;
   };
   notFound: string;
+}
+
+export interface Icons {
+  search?: string;
+  clearSearch?: string;
+  categories?: {
+    [key in I18NCategory]?: string;
+  };
+  notFound?: string;
 }

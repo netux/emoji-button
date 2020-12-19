@@ -6,9 +6,12 @@ import { SHOW_PREVIEW, HIDE_PREVIEW } from './events';
 import { createElement } from './util';
 import { EmojiRecord, EmojiButtonOptions } from './types';
 
-const CLASS_PREVIEW = 'emoji-picker__preview';
-const CLASS_PREVIEW_EMOJI = 'emoji-picker__preview-emoji';
-const CLASS_PREVIEW_NAME = 'emoji-picker__preview-name';
+import {
+  CLASS_PREVIEW,
+  CLASS_PREVIEW_EMOJI,
+  CLASS_PREVIEW_NAME,
+  CLASS_CUSTOM_EMOJI
+} from './classes';
 
 export class EmojiPreview {
   private emoji: HTMLElement;
@@ -34,10 +37,15 @@ export class EmojiPreview {
   }
 
   showPreview(emoji: EmojiRecord): void {
-    this.emoji.innerHTML =
-      this.options.style === 'native'
-        ? emoji.emoji
-        : twemoji.parse(emoji.emoji);
+    let content = emoji.emoji;
+
+    if (emoji.custom) {
+      content = `<img class="${CLASS_CUSTOM_EMOJI}" src="${emoji.emoji}">`;
+    } else if (this.options.style === 'twemoji') {
+      content = twemoji.parse(emoji.emoji, this.options.twemojiOptions);
+    }
+
+    this.emoji.innerHTML = content;
     this.name.innerHTML = emoji.name;
   }
 

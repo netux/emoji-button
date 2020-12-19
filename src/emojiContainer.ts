@@ -3,9 +3,9 @@ import { TinyEmitter as Emitter } from 'tiny-emitter';
 import { Emoji } from './emoji';
 import { createElement } from './util';
 
-import { EmojiButtonOptions, EmojiRecord, RecentEmoji } from './types';
+import { CLASS_EMOJI_CONTAINER } from './classes';
 
-const CLASS_EMOJI_CONTAINER = 'emoji-picker__container';
+import { EmojiButtonOptions, EmojiRecord, RecentEmoji } from './types';
 
 export class EmojiContainer {
   private emojis: Array<EmojiRecord | RecentEmoji>;
@@ -14,7 +14,8 @@ export class EmojiContainer {
     emojis: Array<EmojiRecord | RecentEmoji>,
     private showVariants: boolean,
     private events: Emitter,
-    private options: EmojiButtonOptions
+    private options: EmojiButtonOptions,
+    private lazy = true
   ) {
     this.emojis = emojis.filter(
       e =>
@@ -33,7 +34,8 @@ export class EmojiContainer {
           this.showVariants,
           true,
           this.events,
-          this.options
+          this.options,
+          this.lazy
         ).render()
       )
     );

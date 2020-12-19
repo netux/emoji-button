@@ -1,7 +1,6 @@
 import { TinyEmitter as Emitter } from 'tiny-emitter';
 
-const CLASS_CATEGORY_BUTTONS = 'emoji-picker__category-buttons';
-const CLASS_CATEGORY_BUTTON = 'emoji-picker__category-button';
+import { CLASS_CATEGORY_BUTTONS, CLASS_CATEGORY_BUTTON } from './classes';
 
 import emojiData from './data/emoji';
 
@@ -22,7 +21,8 @@ const categoryIcons: { [key in I18NCategory]: string } = {
   travel: icons.building,
   objects: icons.lightbulb,
   symbols: icons.music,
-  flags: icons.flag
+  flags: icons.flag,
+  custom: icons.icons
 };
 
 export class CategoryButtons {
@@ -39,13 +39,34 @@ export class CategoryButtons {
   render(): HTMLElement {
     const container = createElement('div', CLASS_CATEGORY_BUTTONS);
 
-    const categories = this.options.showRecents
-      ? ['recents', ...(this.options.categories || emojiData.categories)]
-      : this.options.categories || emojiData.categories;
+    const categoryData =
+      this.options.categories ||
+      this.options.emojiData?.categories ||
+      emojiData.categories;
+
+    let categories = this.options.showRecents
+      ? ['recents', ...categoryData]
+      : categoryData;
+
+    if (this.options.custom) {
+      categories = [...categories, 'custom'];
+    }
 
     categories.forEach((category: string) => {
       const button = createElement('button', CLASS_CATEGORY_BUTTON);
-      button.innerHTML = categoryIcons[category];
+
+      if (
+        this.options.icons &&
+        this.options.icons.categories &&
+        this.options.icons.categories[category]
+      ) {
+        button.appendChild(
+          icons.createIcon(this.options.icons.categories[category])
+        );
+      } else {
+        button.innerHTML = categoryIcons[category];
+      }
+
       button.tabIndex = -1;
       button.title = this.i18n.categories[category];
       container.appendChild(button);

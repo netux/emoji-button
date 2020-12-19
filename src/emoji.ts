@@ -2,12 +2,13 @@ import { TinyEmitter as Emitter } from 'tiny-emitter';
 import twemoji from 'twemoji';
 
 import { EMOJI, HIDE_PREVIEW, SHOW_PREVIEW } from './events';
+import { smile } from './icons';
 import { save } from './recent';
 import { createElement } from './util';
 
-import { EmojiButtonOptions, EmojiRecord } from './types';
+import { CLASS_EMOJI, CLASS_CUSTOM_EMOJI } from './classes';
 
-const CLASS_EMOJI = 'emoji-picker__emoji';
+import { EmojiButtonOptions, EmojiRecord } from './types';
 
 export class Emoji {
   private emojiButton: HTMLElement;
@@ -17,17 +18,32 @@ export class Emoji {
     private showVariants: boolean,
     private showPreview: boolean,
     private events: Emitter,
-    private options: EmojiButtonOptions
+    private options: EmojiButtonOptions,
+    private lazy = true
   ) {}
 
   render(): HTMLElement {
     this.emojiButton = createElement('button', CLASS_EMOJI);
-    this.emojiButton.innerHTML =
-      this.options.style === 'native'
-        ? this.emoji.emoji
-        : twemoji.parse(this.emoji.emoji);
+
+    let content = this.emoji.emoji;
+
+    if (this.emoji.custom) {
+      content = this.lazy
+        ? smile
+        : `<img class="${CLASS_CUSTOM_EMOJI}" src="${this.emoji.emoji}">`;
+    } else if (this.options.style === 'twemoji') {
+      content = this.lazy
+        ? smile
+        : twemoji.parse(this.emoji.emoji, this.options.twemojiOptions);
+    }
+
+    this.emojiButton.innerHTML = content;
     this.emojiButton.tabIndex = -1;
 
+    this.emojiButton.dataset.emoji = this.emoji.emoji;
+    if (this.emoji.custom) {
+      this.emojiButton.dataset.custom = 'true';
+    }
     this.emojiButton.title = this.emoji.name;
 
     this.emojiButton.addEventListener('focus', () => this.onEmojiHover());
@@ -35,6 +51,10 @@ export class Emoji {
     this.emojiButton.addEventListener('click', () => this.onEmojiClick());
     this.emojiButton.addEventListener('mouseover', () => this.onEmojiHover());
     this.emojiButton.addEventListener('mouseout', () => this.onEmojiLeave());
+
+    if (this.options.style === 'twemoji' && this.lazy) {
+      this.emojiButton.style.opacity = '0.25';
+    }
 
     return this.emojiButton;
   }
